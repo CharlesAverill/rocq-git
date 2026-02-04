@@ -5,13 +5,12 @@ open Logging
 type arguments = {subcommand: command; command_args: string list}
 
 let commands_help =
-  "
-Supported Commands
-==================
-
-start a working area
-  init      Create an empty Git repository or reinitialize an existing one
-  "
+  "\n\
+   Supported Commands\n\
+   ==================\n\n\
+   start a working area\n\
+  \  init      Create an empty Git repository or reinitialize an existing one\n\
+  \  "
 
 (** Parse command-line arguments *)
 let parse_arguments () =
@@ -20,12 +19,14 @@ let parse_arguments () =
   (* Parse anonymous arguments, e.g. commands *)
   let anon_args_list = ref [] in
   let anon_args arg =
-    if !anon_args_list = [] && !sc = None then (
+    if !anon_args_list = [] && !sc = None then
       match command_of_string arg with
-    | None -> fatal rc_CLI "Unknown subcommand %s" arg
-    | Some arg -> sc := Some arg
-    ) else
-    anon_args_list := !anon_args_list @ [arg]
+      | None ->
+          fatal rc_CLI "Unknown subcommand %s" arg
+      | Some arg ->
+          sc := Some arg
+    else
+      anon_args_list := !anon_args_list @ [arg]
   in
   (* Options *)
   let speclist =
@@ -33,7 +34,10 @@ let parse_arguments () =
     ; ("--verbose", Arg.Set print_version, "Print version information") ]
   in
   (* Usage *)
-  let usage_msg = Printf.sprintf "usage: %s [-v | --version] <command> args\n%s" Version._NAME commands_help in
+  let usage_msg =
+    Printf.sprintf "usage: %s [-v | --version] <command> args\n%s" Version._NAME
+      commands_help
+  in
   (* Parse *)
   Arg.parse speclist anon_args usage_msg ;
   (* Check for version printing *)
@@ -42,4 +46,5 @@ let parse_arguments () =
       Version._AUTHOR ;
     exit 0
   ) else
-    {subcommand= (match !sc with None -> Help | Some sc' -> sc'); command_args = !anon_args_list}
+    { subcommand= (match !sc with None -> Help | Some sc' -> sc')
+    ; command_args= !anon_args_list }

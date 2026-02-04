@@ -25,4 +25,5 @@
  (description "A rudimentary implementation of git in Rocq, with rudimentary filesystem modeling")
  (depends
    (dune (>= 3.21.0))
-   (rocq (>= 9.0.0))))
+   (rocq (>= 9.0.0))
+   (camlzip (>= 1.13))))

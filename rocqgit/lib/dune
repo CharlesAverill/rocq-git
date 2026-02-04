@@ -4,4 +4,4 @@
  (name rocqgit_lib)
  (public_name rocq-git.lib)
  (modules :standard)
- (libraries unix))
+ (libraries unix camlzip))

@@ -1,4 +1,4 @@
-type command = Init | Add | Commit | Push | Help
+type command = Init | Add | Commit | Push | Help | Hash
 
 let string_of_command = function
   | Init ->
@@ -11,6 +11,8 @@ let string_of_command = function
       "push"
   | Help ->
       "help"
+  | Hash ->
+      "hash"
 
 let command_of_string = function
   | "init" ->
@@ -23,5 +25,7 @@ let command_of_string = function
       Some Push
   | "help" ->
       Some Help
+  | "hash" ->
+      Some Hash
   | _ ->
       None

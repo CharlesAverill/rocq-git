@@ -1,7 +1,4 @@
-
-type nat =
-| O
-| S of nat
+type nat = O | S of nat
 
 val app : 'a1 list -> 'a1 list -> 'a1 list
 
@@ -9,7 +6,7 @@ val in_dec : ('a1 -> 'a1 -> bool) -> 'a1 -> 'a1 list -> bool
 
 val fold_left : ('a1 -> 'a2 -> 'a1) -> 'a2 list -> 'a1 -> 'a1
 
-type path = { absolute : bool; parts : string list }
+type path = {absolute: bool; parts: string list}
 
 val render : path -> string
 
@@ -23,8 +20,7 @@ type ref = nat
 
 type head = nat
 
-type repo = { root : path; objects : object0 list; refs : ref list;
-              heads : head list }
+type repo = {root: path; objects: object0 list; refs: ref list; heads: head list}
 
 val fresh_repo : string -> repo Utils.sresult
 
@@ -43,8 +39,6 @@ val open_out : string -> out_channel Utils.sresult
 type file_perm = Uint63.t
 
 val fp755 : file_perm
-
-
 
 val mkdir' : string -> unit
 

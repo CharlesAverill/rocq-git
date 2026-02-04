@@ -78,9 +78,7 @@ let string_of_log = function
 let fatal rc fmt =
   Printf.ksprintf
     (fun msg ->
-      Printf.fprintf stderr
-        "%s[%s] - %s%s\n" error_red
-        (snd rc) ansi_reset msg ;
+      Printf.fprintf stderr "%s[%s] - %s%s\n" error_red (snd rc) ansi_reset msg ;
       flush stderr ;
       exit (fst rc) )
     fmt
