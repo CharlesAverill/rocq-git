@@ -16,6 +16,9 @@ Definition init (repo_name : string) : result repo :=
 
   (* Write to HEAD *)
   oc <- open_out (HEAD_path repo) ;;
-  let* _ <= output_string oc "ref: refs/heads/main" #;
+  let* _ <= output_string oc "ref: refs/heads/main
+" #;
+
+  let* _ <= print_endline ("Initialized empty Git repository in " ++ repo_name) #;
 
   return repo.

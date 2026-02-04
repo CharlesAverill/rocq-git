@@ -2,6 +2,7 @@
 (using rocq 0.11)
 
 (name rocq-git)
+(version 0.1)
 
 (generate_opam_files true)
 

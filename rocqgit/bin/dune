@@ -2,3 +2,10 @@
  (name main)
  (public_name rgit)
  (libraries rocq-git.lib))
+
+(rule
+ (target version.ml)
+ (action
+  (write-file
+   %{target}
+   "let _NAME = \"rgit\"\nlet _VERSION = \"%{version:rocq-git}\"\nlet _AUTHOR = \"Charles Averill <charlesaverill20@gmail.com>\"")))

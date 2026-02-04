@@ -32,10 +32,6 @@ let fold_left f =
     | b :: l0 -> fold_left0 l0 (f a0 b)
   in fold_left0
 
-type 'x result =
-| Ok of 'x
-| Error of string
-
 type path = { absolute : bool; parts : string list }
 
 (** val render : path -> string **)
@@ -43,7 +39,7 @@ type path = { absolute : bool; parts : string list }
 let render p =
   (^) (if p.absolute then "/" else "") (String.concat "/" p.parts)
 
-(** val parse_path : string -> path result **)
+(** val parse_path : string -> path Utils.sresult **)
 
 let parse_path s =
   if in_dec (=) ' '
@@ -575,7 +571,7 @@ let parse_path s =
        in
        Ok { absolute = absolute0; parts = parts1 }
 
-(** val concat_paths : path -> path -> path result **)
+(** val concat_paths : path -> path -> path Utils.sresult **)
 
 let concat_paths p1 p2 =
   if p2.absolute
@@ -591,7 +587,7 @@ type head = nat
 type repo = { root : path; objects : object0 list; refs : ref list;
               heads : head list }
 
-(** val fresh_repo : string -> repo result **)
+(** val fresh_repo : string -> repo Utils.sresult **)
 
 let fresh_repo name =
   match parse_path name with
@@ -678,7 +674,7 @@ let hEAD_path r =
    | Ok x -> (fun _ -> x)
    | Error _ -> (fun _ -> assert false (* absurd case *))) __
 
-(** val open_out : string -> out_channel result **)
+(** val open_out : string -> out_channel Utils.sresult **)
 
 let open_out = (fun s -> Ok (open_out s))
 
@@ -696,7 +692,7 @@ let fp755 =
 let mkdir' s =
   Unix.mkdir s fp755
 
-(** val init : string -> repo result **)
+(** val init : string -> repo Utils.sresult **)
 
 let init repo_name =
   match fresh_repo repo_name with
@@ -707,6 +703,11 @@ let init repo_name =
     let () = mkdir' (render (refs_dir repo0)) in
     let () = mkdir' (render (heads_dir repo0)) in
     (match open_out (render (hEAD_path repo0)) with
-     | Ok oc -> let () = output_string oc "ref: refs/heads/main" in Ok repo0
+     | Ok oc ->
+       let () = output_string oc "ref: refs/heads/main\n" in
+       let () =
+         print_endline ((^) "Initialized empty Git repository in " repo_name)
+       in
+       Ok repo0
      | Error err -> Error err)
   | Error err -> Error err
